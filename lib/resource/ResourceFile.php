@@ -5,7 +5,7 @@ namespace basexxl\lib\resource;
 操作文件资源
 **/
 
-class FileResource extends ResourceAbstract{
+class ResourceFile extends ResourceAbstract{
 		
 	public function  __construct ($resName) {
        

@@ -1,7 +1,7 @@
 <?php
 namespace basexxl\lib\base;
 
-class Object{
+class BaseObject{
 		
 	
 }

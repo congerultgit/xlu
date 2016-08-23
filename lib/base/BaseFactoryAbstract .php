@@ -1,7 +1,7 @@
 <?php
 namespace basexxl\lib\resource;
 namespace basexxl\lib\base;
-abstract class FactoryAbstract extends  Object{
+abstract class BaseFactoryAbstract extends  BaseObject{
 	
 	//共有创建对象
 	public static function createObject($str,$arge);
