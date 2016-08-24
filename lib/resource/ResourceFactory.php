@@ -13,6 +13,22 @@ class ResourceFactory extends ResourceAbstract{
 	   
 	}
 	
+	public function read($resName,$start,$end){
+		
+		
+	}
+	
+	public function write($resName,$content){
+		
+		
+	}
+	
+	public function baseInfo(){
+		
+		
+	}
+	
+	
 	public  static function createObject($file,$fileinfo=null){
 		
 	}

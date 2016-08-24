@@ -1,5 +1,4 @@
 <?php
-namespace basexxl\lib\resource;
 namespace basexxl\lib\base;
 abstract class BaseFactoryAbstract extends  BaseObject{
 	
