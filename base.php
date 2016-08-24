@@ -1,7 +1,7 @@
 <?php
-namespace basexxl;
+namespace xlu;
 define('ROOT',__DIR__);
-define('BAXXLROOT',__DIR__);
+define('XLUROOT',__DIR__);
 define('DIROFF',DIRECTORY_SEPARATOR);
 class base {
 	
@@ -11,8 +11,12 @@ class base {
 		return 123;
 	}
 	
+	public static function makeObject($name,$array=''){
+		self::autoload($name);		
+	}	
 	
-	public function object($name,$array=''){
+	public static function object($name,$array=''){
+		var_dump($name);
 		self::autoload($name);		
 	}
 	
@@ -78,7 +82,6 @@ class base {
 	}
 	
 }
-base::setNickname('basexxl',BAXXLROOT);
-spl_autoload_register('\basexxl\base::autoload',true, true);
+
 
 ?>

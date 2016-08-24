@@ -1,5 +1,5 @@
 <?php
-namespace basexxl\lib\resource;
+namespace xlu\lib\resource;
 
 /**
 操作文件资源

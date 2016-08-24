@@ -1,5 +1,5 @@
 <?php
-namespace basexxl\lib\base;
+namespace xlu\lib\base;
 
 class BaseObject{
 		

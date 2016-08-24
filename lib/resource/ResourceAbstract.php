@@ -1,5 +1,5 @@
 <?php
-namespace basexxl\lib\resource;
+namespace xlu\lib\resource;
 
 abstract class ResourceAbstract{
 	

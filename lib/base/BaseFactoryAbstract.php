@@ -1,5 +1,5 @@
 <?php
-namespace basexxl\lib\base;
+namespace xlu\lib\base;
 abstract class BaseFactoryAbstract extends  BaseObject{
 	
 	//共有创建对象
