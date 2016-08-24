@@ -7,9 +7,10 @@ namespace xlu\lib\resource;
 
 class ResourceFactory extends ResourceAbstract{
 		
-	public function  __construct ($resName) {
+	public $resName = '';
+		
+	public function  __construct () {
        
-	   $this->resName = $resName;
 	   
 	}
 	

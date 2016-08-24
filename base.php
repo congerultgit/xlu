@@ -11,13 +11,16 @@ class base {
 		return 123;
 	}
 	
-	public static function makeObject($name,$array=''){
-		self::autoload($name);		
+	public function makeObject($name,$array=''){
+		self::object($name);		
 	}	
 	
 	public static function object($name,$array=''){
-		var_dump($name);
-		self::autoload($name);		
+		
+		$classname = self::autoload($name);
+		
+		$test = new $classname();		
+		var_dump($test);
 	}
 	
 	
@@ -47,7 +50,7 @@ class base {
 	 * 3 \lib\resource\RscourceUrl 同2直接引用
 	 * */
 	static public function autoload($classname){
-		$classname = trim($classname,'\\');
+		$classname = $return_classname = trim($classname,'\\');
 		$class_array = explode('\\',$classname);		
 		//完全命名空间
 		$tmp_classname = self::getNickname($classname);
@@ -58,6 +61,7 @@ class base {
 		}else{
 			//如果没有找见，看是否有默认工厂类
 			$base_fact_file = ucfirst($class_array[(count($class_array)-1)]).'Factory.php';
+			$return_classname = $return_classname.'\\'.ucfirst($class_array[(count($class_array)-1)]).'Factory';
 			$fact_class = $tmp_file.DIROFF.$base_fact_file;
 			if(file_exists($fact_class)){
 				include_once $fact_class;
@@ -69,6 +73,7 @@ class base {
 			}
 			
 		}
+		return $return_classname;
 
 	}
 	
