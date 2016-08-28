@@ -13,7 +13,8 @@ $a = trim('\a\b\c','\\');
  * 对象工厂，按类型划分，世界上应该不会有单一的元素归于单独的一个类型
  *  
  */
-
+ 
+//ma dan lao zi hao lei 
 
 $res = xlu::object('xlu\lib\resource');
 
