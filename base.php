@@ -15,7 +15,7 @@ class base {
 		self::object($name);		
 	}	
 	
-	public static function object($name,$array=''){
+	public static function object($name,$param=array(),$array=array()){
 		
 		$classname = self::autoload($name);
 		
