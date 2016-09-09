@@ -18,6 +18,8 @@ $a = trim('\a\b\c','\\');
 
 $res = xlu::object('xlu\lib\resource');
 
+echo 123;exit;
+
 //var_dump($a->test());
 
 

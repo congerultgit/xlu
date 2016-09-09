@@ -1,11 +1,15 @@
 <?php
 namespace xlu;
+use xlu\lib\di\DiContainer;
 define('ROOT',__DIR__);
 define('XLUROOT',__DIR__);
 define('DIROFF',DIRECTORY_SEPARATOR);
+
 class base {
 	
 	public static $nickname = array();
+	
+	public static $container = '';
 	
 	public function test(){
 		return 123;
@@ -17,10 +21,19 @@ class base {
 	
 	public static function object($name,$param=array(),$array=array()){
 		
-		$classname = self::autoload($name);
+		$classname = $name;
+		if(is_string($name)){
+			$classname = self::autoload($name);
+		}
+		if(isset($name['class'])){
+			$classname = self::autoload($name['class']);
+			
+		}
+		$object = self::$container->get($classname,$param,$array);
 		
-		$test = new $classname();		
-		var_dump($test);
+		var_dump($object);
+		echo 34;exit;
+
 	}
 	
 	
