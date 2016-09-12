@@ -25,7 +25,7 @@ class DiInstance extends  BaseComponent{
 		}else{
 			$self_class = self::$selfClass;
 		}
-		$object = $self_class->build($class='',$param=array(),$array=array());
+		$object = $self_class->build($class,$param,$array);
 		
 		
 		
@@ -52,8 +52,15 @@ class DiInstance extends  BaseComponent{
 
         $dependencies = [];
 		echo $class;
+		echo '<br>';
+		//echo 'xlu\lib\resource\ResourceFactory';
+		$reflection = new ReflectionClass('xlu\lib\resource\ResourceFactory');
+		//var_dump($reflection);
+		//$class = 'xlu\lib\resource\ResourceFactory';
         $reflection = new ReflectionClass($class);
+		var_dump($reflection);
 		exit;
+		
         $constructor = $reflection->getConstructor();
         if ($constructor !== null) {
             foreach ($constructor->getParameters() as $param) {

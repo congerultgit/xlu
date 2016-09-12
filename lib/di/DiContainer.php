@@ -41,7 +41,7 @@ class DiContainer extends  BaseComponent{
 
 		$key = $type.base64_encode(json_encode($param)).base64_encode(json_encode($array));
 	
-		echo $type;
+		//echo $type;
 		if(class_exists($type) == FALSE){
 			$this->singletons[$key] = $param;
 			return $param;
