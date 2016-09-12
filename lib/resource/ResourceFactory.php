@@ -8,8 +8,12 @@ namespace xlu\lib\resource;
 class ResourceFactory extends ResourceAbstract{
 		
 	public $resName = '';
+	
+	const RES_TYPE_URL = 'url';
+	
+	
 		
-	public function  __construct () {
+	public function  __construct ($type='',$resname='') {
        
 	   
 	}

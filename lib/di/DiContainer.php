@@ -14,9 +14,14 @@ class DiContainer extends  BaseComponent{
 		
 		//生成唯一的key
 		$key = $type.base64_encode(json_encode($param)).base64_encode(json_encode($array));
+
+		if(isset($this->singletons[$key])){
+			return $this->singletons;
+		}
 		
 		$tmp_obj = null;
 		if(is_string($type)){
+						
 			$tmp_obj = $this->set($type,$param,$array);
 			$this->singletons[$key] = $tmp_obj;
 			return $tmp_obj;

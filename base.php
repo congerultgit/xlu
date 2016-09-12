@@ -31,8 +31,7 @@ class base {
 		}
 		$object = self::$container->get($classname,$param,$array);
 		
-		var_dump($object);
-		echo 34;exit;
+		return $object;
 
 	}
 	
