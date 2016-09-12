@@ -1,6 +1,7 @@
 <?php
 namespace xlu;
 use xlu\lib\di\DiContainer;
+use xlu\lib\base\BaseErrorException;
 define('ROOT',__DIR__);
 define('XLUROOT',__DIR__);
 define('DIROFF',DIRECTORY_SEPARATOR);
@@ -79,11 +80,7 @@ class base {
 				include_once $fact_class;
 			}else{
 				
-				throw new  BaseErrorException ( $errstr ,  0 ,  $errno ,  $errfile ,  $errline );
-				
-				echo $class_file.'<br>';
-				echo $fact_class.'<br>';
-				echo 'class file no found';exit;
+				throw new  BaseErrorException ('CLASS FILE NO FOUND',BaseErrorException::error_code_on_found,2,$class_file.'||'.$fact_class,__LINE__);
 				
 			}
 			

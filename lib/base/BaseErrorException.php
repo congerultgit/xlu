@@ -2,8 +2,10 @@
 namespace xlu\lib\base;
 use xlu;
 
-class ErrorException extends \ErrorException
+class BaseErrorException extends \ErrorException{
 		
+	//类没有找到
+	const error_code_on_found = 404;
 	
 }
 
