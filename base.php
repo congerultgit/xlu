@@ -78,6 +78,9 @@ class base {
 			if(file_exists($fact_class)){
 				include_once $fact_class;
 			}else{
+				
+				throw new  BaseErrorException ( $errstr ,  0 ,  $errno ,  $errfile ,  $errline );
+				
 				echo $class_file.'<br>';
 				echo $fact_class.'<br>';
 				echo 'class file no found';exit;

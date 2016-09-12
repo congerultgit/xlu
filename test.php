@@ -16,7 +16,9 @@ $a = trim('\a\b\c','\\');
  
 //ma dan lao zi hao lei 
 
-$res = xlu::object('xlu\lib\resource');
+//$res = xlu::object('xlu\lib\resource');
+
+$res = xlu::object('xlu\lib\resourceabc');
 
 var_dump($res);
 
