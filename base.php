@@ -57,7 +57,7 @@ class base {
 	
 	/*
 	 * $classname 
-	 * 1 lib\resource  去basexxl\lib\resource\RescouceFactory.php 目录寻找 ,暂时去掉自动寻找,怪sb的
+	 * 1 xlu\lib\resource  去basexxl\lib\resource\RescouceFactory.php 目录寻找 ,暂时去掉自动寻找,怪sb的
 	 * 2 lib\resource\ResourceUrl.php 文件
 	 * 3 \lib\resource\RscourceUrl 同2直接引用
 	 * */

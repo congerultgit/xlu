@@ -11,9 +11,13 @@ class ResourceFactory extends ResourceAbstract{
 	
 	const RES_TYPE_URL = 'url';
 	
+	const RES_TYPE_FILE = 'file';
+	
+	const RES_TYPE_RES = 'res';
+	
 	
 		
-	public function  __construct ($type='',$resname='') {
+	public function  __construct ($resname='',$type="url") {
        
 	   
 	}
