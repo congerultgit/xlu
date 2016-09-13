@@ -20,9 +20,12 @@ $a = trim('\a\b\c','\\');
 
 $res = xlu::object('xlu\lib\resource',array(array('res_name'=>'http://www.baidu.com','res_type'=>'url')));
 
-
 var_dump($res);
 
+exit;
+$obj_res = $res->getObject();
+
+var_dump($obj_res->read());
 
 exit;
 

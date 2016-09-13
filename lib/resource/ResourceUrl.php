@@ -16,8 +16,33 @@ class ResourceUrl extends lb\BaseObject implements  ResourceInterface{
 	   
 	}
 	
-	public 	function read($file='',$start='',$end=''){
+	public 	function read($start='',$size=''){
 		
+		$tmp_start = '';
+		$tmp_size = '';
+		$tmp_url = $this->resName;
+
+		if($start ==''&&$size !=''){
+			$tmp_start = 0;
+			$tmp_size = $size;
+			$content = file_get_contents($tmp_url);
+		}		
+		if($start ==''&&$size ==''){
+			$content = file_get_contents($tmp_url);
+		}
+
+		if($start !=''&&$size ==''){
+			$tmp_start = $start;
+			$content = file_get_contents($tmp_url,null,null,$tmp_start);
+		}		
+		
+		if($start !=''&&$size !=''){
+			$tmp_start = $start;
+			$tmp_size = $size;
+			$content = file_get_contents($tmp_url,null,null,$tmp_start,$tmp_size);
+		}	
+		
+		return $content;
 		
 	}
 	
