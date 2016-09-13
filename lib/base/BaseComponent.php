@@ -1,7 +1,7 @@
 <?php
 namespace xlu\lib\base;
 
-class BaseComponent{
+class BaseComponent extends  Baseobject{
 		
 	
 }

@@ -1,11 +1,13 @@
 <?php
 namespace xlu\lib\resource;
+use xlu;
+use xlu\lib\base as lb;
 
 /**
 操作文件资源
 **/
 
-class ResourceFile extends ResourceAbstract{
+class ResourceFile extends lb\BaseObject implements  ResourceInterface{
 		
 	public function  __construct ($resName) {
        

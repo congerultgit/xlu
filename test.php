@@ -18,7 +18,7 @@ $a = trim('\a\b\c','\\');
 
 //$res = xlu::object('xlu\lib\resource');
 
-$res = xlu::object('xlu\lib\resourceabc');
+$res = xlu::object('xlu\lib\resource',array('http://www.baidu.com','url'));
 
 var_dump($res);
 

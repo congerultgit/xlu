@@ -1,11 +1,12 @@
 <?php
 namespace xlu\lib\resource;
-
+use xlu;
+use xlu\lib\base as lb;
 /**
 操作文件资源
 **/
 
-class ResourceUrl extends ResourceAbstract{
+class ResourceUrl extends lb\BaseObject implements  ResourceInterface{
 		
 	public function  __construct ($resName) {
        
@@ -13,7 +14,7 @@ class ResourceUrl extends ResourceAbstract{
 	   
 	}
 	
-	public 	function read($file,$start,$end){
+	public 	function read($file='',$start='',$end=''){
 		
 		
 	}
