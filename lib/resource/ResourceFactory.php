@@ -14,7 +14,7 @@ class ResourceFactory extends lb\BaseObject{
 	
 	public $res_allow_type = array('Url','File');
 	
-	public $object = array();
+	public $object = '';
 	/**
 	 * 初始化参数由一个数组控制
 	 * $param 
@@ -35,15 +35,15 @@ class ResourceFactory extends lb\BaseObject{
 		
 
 
-		if(isset($this->object[$this->res_name])){
-			return $this->object[$this->res_name];
+		if($this->object){
+			return $this->object;
 		}
 		
 		$for_class = 'Resource'.$res_type;
 		
-		$object = xlu::object(__NAMESPACE__.'\\'.$for_class);
+		$object = xlu::object(__NAMESPACE__.'\\'.$for_class,array($this->res_name));
 	
-		$this->object[$this->res_name] = $object;
+		$this->object = $object;
 	
 		return $object;   
 	   
@@ -53,11 +53,8 @@ class ResourceFactory extends lb\BaseObject{
 	
 	public  function getObject(){
 
-		$for_class = 'Resource'.$this->res_type;
-		
-		$object = xlu::object(__NAMESPACE__.'\\'.$for_class,array($this->res_name));
 	
-		return $object;  
+		return $this->object;  
 
 		
 	}
