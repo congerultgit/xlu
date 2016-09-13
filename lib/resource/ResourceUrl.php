@@ -7,6 +7,8 @@ use xlu\lib\base as lb;
 **/
 
 class ResourceUrl extends lb\BaseObject implements  ResourceInterface{
+
+	public $resName = '';
 		
 	public function  __construct ($resName) {
        

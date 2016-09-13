@@ -8,33 +8,40 @@ use xlu\lib\base as lb;
 
 class ResourceFactory extends lb\BaseObject{
 		
-	public $resName = '';
+	public $res_name = '';
 	
-	public $type = '';
+	public $res_type = '';
 	
-	public $res_type = array('Url','File');
+	public $res_allow_type = array('Url','File');
 	
 	
-
+	/**
+	 * 
+	 * $param 
+	 * $param['res_name']
+	 * $param['res_type']
+	 * 
+	 */
 		
-	public function  __construct ($resname='',$type='url') {
-		
-     	if(empty($resname) || empty($type))throw new lb\BaseErrorException( __CLASS__.' construct initialization failed');
+	public function  __construct ($param = array()) {
+
+     	if(empty($param['res_name']) || empty($param['res_type']))throw new lb\BaseErrorException( __CLASS__.' construct initialization failed');
 
 
 
-		$res_type = ucfirst(strtolower($type));
+		$res_type = ucfirst(strtolower($param['res_type']));
 				
-		if(array_search($res_type, $this->res_type) === false)throw new lb\BaseErrorException( __CLASS__.' resource type not support');	
+		if(array_search($res_type, $this->res_allow_type) === false)throw new lb\BaseErrorException( __CLASS__.' resource type not support');	
 
-		$this->resName = $resname;
-		$this->type = $type;
+		$this->resName = $param['res_name'];
+		$this->type = $param['res_type'];
 
 		
 		$for_class = 'Resource'.$res_type;
 		
 		$object = xlu::object(__NAMESPACE__.'\\'.$for_class);
 	
+		echo 123;var_dump($object);
 		return $object;   
 	   
 	   
