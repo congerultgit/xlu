@@ -1,12 +1,13 @@
 <?php
 namespace xlu\lib\resource;
 use xlu;
-use xlu\lib\base as lb;
+use xlu\lib\base\BaseErrorException;
+use xlu\lib\base\Baseobject;
 /**
 操作文件资源
 **/
 
-class ResourceFactory extends lb\BaseObject{
+class ResourceFactory extends BaseObject{
 		
 	public $res_name = '';
 	
@@ -25,16 +26,14 @@ class ResourceFactory extends lb\BaseObject{
 		
 	public function  __construct ($param = array('res_name'=>'','res_type'=>'url')) {
 
+     	if(empty($param['res_name']) || empty($param['res_type']))throw new BaseErrorException( __CLASS__.' construct initialization failed');		
+	
 		$res_type = ucfirst(strtolower($param['res_type']));
 		$this->res_name = $param['res_name'];
 		$this->res_type = $res_type;
-
-     	if(empty($param['res_name']) || empty($param['res_type']))throw new lb\BaseErrorException( __CLASS__.' construct initialization failed');	
 		
-		if(array_search($res_type, $this->res_allow_type) === false)throw new lb\BaseErrorException( __CLASS__.' resource type not support');	
+		if(array_search($res_type, $this->res_allow_type) === false)throw new BaseErrorException( __CLASS__.' resource type not support');	
 		
-
-
 		if($this->object){
 			return $this->object;
 		}
@@ -52,10 +51,8 @@ class ResourceFactory extends lb\BaseObject{
 	
 	
 	public  function getObject(){
-
 	
 		return $this->object;  
-
 		
 	}
 	

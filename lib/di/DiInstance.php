@@ -38,15 +38,11 @@ class DiInstance extends  BaseComponent{
 		
 		//获得反射对象，已经所需的构造函数
 		list ($reflection, $dependencies) = $this->getDependencies($class);
-		//var_dump($reflection);
-		//var_dump($dependencies);
-		//exit;
 		
 		foreach ($param as $index => $value) {
             $dependencies[$index] = $value;
         }
-		
-		
+				
         $dependencies = $this->resolveDependencies($dependencies, $reflection);
         if (empty($array)) {
             return $reflection->newInstanceArgs($dependencies);
@@ -77,7 +73,6 @@ class DiInstance extends  BaseComponent{
 	 * 获得类的反射对象以及构造函数
 	 * 
 	 * */
-	
 	
     protected function getDependencies($class)
     {

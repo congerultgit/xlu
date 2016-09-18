@@ -48,9 +48,7 @@ class base {
 		$for_name = $tmp_array[0];
 		if(isset(self::$nickname[$for_name])){
 			$return = array();
-			//$return['one'] = preg_replace("/{$for_name}/", $tmp_name, $tmp_name,1);
 			return preg_replace("/{$for_name}/", self::$nickname[$for_name], $tmp_name);
-			//return $return;
 		}else{
 			return $name;
 		}		
@@ -76,9 +74,7 @@ class base {
 		//理想类文件
 		$class_file = $tmp_file.'.php';
 		
-		//如果文件以base开始，直接切换进lib\base 全局加载
-		
-		
+		//如果文件以base开始，直接切换进lib\base 全局加载		
 		if(file_exists($class_file)){
 			include_once $class_file;
 		}else{
@@ -104,6 +100,15 @@ class base {
 		return $return_classname;
 
 	}
+
+    public static function configure($object, $properties)
+    {
+        foreach ($properties as $name => $value) {
+            $object->$name = $value;
+        }
+
+        return $object;
+    }
 	
 	/*
 	 * 
