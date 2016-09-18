@@ -26,7 +26,12 @@ $obj_res = $res->getObject();
 //var_dump($obj_res->read());
 
 //test123
-	
+$db = xlu::object(array(
+		'class'=>'xlu\lib\db\DbConnection',
+		'name' =>'123',
+		'pwd'  => '456'
+
+	));
 var_dump($db);
 
 exit;
