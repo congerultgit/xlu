@@ -18,6 +18,7 @@ class DiInstance extends  BaseComponent{
 	
 	public static function createObject($class='',$param=array(),$array=array()){
 		
+	
 		$self_class = '';
 		if(empty(self::$selfClass)){
 			self::$selfClass = new self();
@@ -38,14 +39,29 @@ class DiInstance extends  BaseComponent{
 		
 		//获得反射对象，已经所需的构造函数
 		list ($reflection, $dependencies) = $this->getDependencies($class);
-		
+
 		foreach ($param as $index => $value) {
             $dependencies[$index] = $value;
         }
 				
         $dependencies = $this->resolveDependencies($dependencies, $reflection);
+		//如果配置array为空
         if (empty($array)) {
             return $reflection->newInstanceArgs($dependencies);
+        }
+		
+		//如果构造函数参数不为空
+	    if (!empty($dependencies)) {
+            // 最后一位覆盖
+            $dependencies[count($dependencies) - 1] = $array;
+            return $reflection->newInstanceArgs($dependencies);
+        } else {
+        	//追加成全局变量
+            $object = $reflection->newInstanceArgs($dependencies);
+            foreach ($array as $name => $value) {
+                $object->$name = $value;
+            }
+            return $object;
         }		
 		
 		
@@ -54,7 +70,7 @@ class DiInstance extends  BaseComponent{
     protected function resolveDependencies($dependencies, $reflection = null)
     {
         foreach ($dependencies as $index => $dependency) {
-            if ($dependency instanceof Instance) {
+            if ($dependency instanceof DiInstance) {
                 if ($dependency->id !== null) {
                     $dependencies[$index] = $this->get($dependency->id);
                 } elseif ($reflection !== null) {

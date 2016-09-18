@@ -46,16 +46,11 @@ class DiContainer extends  BaseComponent{
 
 		$key = $type.base64_encode(json_encode($param)).base64_encode(json_encode($array));
 	
-		//echo $type;
 		if(class_exists($type) == FALSE){
 			$this->singletons[$key] = $param;
 			return $param;
 		}
-		
-		$class_name = $type;
-		$constructor_param = $param;
-		$public_param = $array;
-		
+				
 		$tmp_object = DiInstance::createObject($type,$param,$array);
 		
 		return $tmp_object;

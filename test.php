@@ -23,7 +23,11 @@ $res = xlu::object('xlu\lib\resource',array(array('res_name'=>'http://www.baidu.
 $obj_res = $res->getObject();
 
 
-var_dump($obj_res->read());
+//var_dump($obj_res->read());
+
+//test123
+	
+var_dump($db);
 
 exit;
 

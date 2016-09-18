@@ -28,7 +28,9 @@ class base {
 		}
 		if(isset($name['class'])){
 			$classname = self::autoload($name['class']);
-			
+			unset($name['class']);
+			$array = $name;
+				
 		}
 		$object = self::$container->get($classname,$param,$array);
 		
