@@ -40,6 +40,10 @@ class DbConnection extends  BaseComponent{
 	//
 	private $_schema = '';
 	
+	//?
+	public $_transaction;
+
+	
 	//
     public $schemaMap = [
         'pgsql' => 'xlu\lib\db\pgsql\Schema', // PostgreSQL
@@ -83,6 +87,22 @@ class DbConnection extends  BaseComponent{
 		
 		
 	}
+	
+    public function getSlavePdo($fallbackToMaster = true)
+    {
+        $db = $this->getSlave(false);
+        if ($db === null) {
+            return $fallbackToMaster ? $this->getMasterPdo() : null;
+        } else {
+            return $db->pdo;
+        }
+    }
+
+    public function getMasterPdo()
+    {
+        $this->open();
+        return $this->pdo;
+    }
 	
 	//真实创建连接,由不同的devices选用不同的PDO类
     protected function createPdoInstance(){
@@ -162,6 +182,31 @@ class DbConnection extends  BaseComponent{
                 throw new NotSupportedException("Connection does not support reading schema information for '$driver' DBMS.");
             }
         }
+    }
+	
+    public function quoteSql($sql)
+    {
+        return preg_replace_callback(
+            '/(\\{\\{(%?[\w\-\. ]+%?)\\}\\}|\\[\\[([\w\-\. ]+)\\]\\])/',
+            function ($matches) {
+                if (isset($matches[3])) {
+                    return $this->quoteColumnName($matches[3]);
+                } else {
+                    return str_replace('%', $this->tablePrefix, $this->quoteTableName($matches[2]));
+                }
+            },
+            $sql
+        );
+    }
+
+    public function quoteColumnName($name)
+    {
+        return $this->getSchema()->quoteColumnName($name);
+    }
+	
+    public function getTransaction()
+    {
+        return $this->_transaction && $this->_transaction->getIsActive() ? $this->_transaction : null;
     }	
 	
 }

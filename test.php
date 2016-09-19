@@ -33,7 +33,7 @@ $db = xlu::object(array(
 		'charset' =>'utf8'
 	));
 $tmp = $db->createCommand('select * from edu_user');
-var_dump($tmp);
+$data = $tmp->queryAll();
 exit;
 
 //var_dump($a->test());
