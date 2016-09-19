@@ -1,6 +1,5 @@
 <?php
-include './xlu.php';
-//test程序
+include './xlu.php';//test程
 
 //var_dump( strcmp ('124','123')); 
 //var_dump(strncmp('\abc','\\',1));
@@ -28,9 +27,9 @@ $obj_res = $res->getObject();
 //test123
 $db = xlu::object(array(
 		'class'=>'xlu\lib\db\DbConnection',
-		'name' =>'123',
-		'pwd'  => '456'
-
+		'username' =>'root',
+		'password'  => '',
+		'dns'=>'mysql:host=192.168.3.110;dbname=edu_video'
 	));
 var_dump($db);
 
