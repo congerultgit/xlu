@@ -29,10 +29,11 @@ $db = xlu::object(array(
 		'class'=>'xlu\lib\db\DbConnection',
 		'username' =>'root',
 		'password'  => '',
-		'dns'=>'mysql:host=192.168.3.110;dbname=edu_video'
+		'dns'=>'mysql:host=192.168.3.110;dbname=edu_video',
+		'charset' =>'utf8'
 	));
-var_dump($db);
-
+$tmp = $db->createCommand('select * from edu_user');
+var_dump($tmp);
 exit;
 
 //var_dump($a->test());

@@ -20,15 +20,40 @@ class DbConnection extends  BaseComponent{
 	
 	public $password = '';
 	
+	//PDO配置信息
 	public $attributes = '';
 	
 	//保存数据库连接实例
 	private $_pdo = null;
 	
 	public $master = null;
+	
+	//默认字符集
+	public $charset = 'utf8';
 		
 	//POD类名
 	public $pdoClass = '';
+	
+	//伪预处理 应该为false
+	public $emulatePrepare;
+	
+	//
+	private $_schema = '';
+	
+	//
+    public $schemaMap = [
+        'pgsql' => 'xlu\lib\db\pgsql\Schema', // PostgreSQL
+        'mysqli' => 'xlu\lib\db\mysql\MysqlSchema', // MySQL
+        'mysql' => 'xlu\lib\db\mysql\MysqlSchema', // MySQL
+        'sqlite' => 'xlu\lib\db\sqlite\Schema', // sqlite 3
+        'sqlite2' => 'xlu\lib\db\sqlite\Schema', // sqlite 2
+        'sqlsrv' => 'xlu\lib\db\mssql\Schema', // newer MSSQL driver on MS Windows hosts
+        'oci' => 'xlu\lib\db\oci\Schema', // Oracle driver
+        'mssql' => 'xlu\lib\db\mssql\Schema', // older MSSQL driver on MS Windows hosts
+        'dblib' => 'xlu\lib\db\mssql\Schema', // dblib drivers on GNU/Linux (and maybe other OSes) hosts
+        'cubrid' => 'xlu\lib\db\cubrid\Schema', // CUBRID
+    ];	
+
 	
 	//创建连接
 	private function open(){
@@ -47,10 +72,14 @@ class DbConnection extends  BaseComponent{
         if (empty($this->dsn)) {
             throw new BaseErrorException('DB dsn is null.');
         }		
-		
-		$this->_pdo = $this->createPdoInstance();
-		//配置 参数
-        $this->initConnection();
+		try{
+			$this->_pdo = $this->createPdoInstance();
+			//配置
+	        $this->initConnection();
+		}catch( BaseErrorException $e ){
+			echo $e->getMessage();
+			exit;
+		}
 		
 		
 	}
@@ -66,7 +95,7 @@ class DbConnection extends  BaseComponent{
                 $driver = strtolower(substr($this->dsn, 0, $pos));
             }
             if (isset($driver) && ($driver === 'mssql' || $driver === 'dblib' || $driver === 'sqlsrv')) {
-                $pdoClass = 'yii\db\mssql\PDO';
+                $pdoClass = 'xlu\db\mssql\PDO';
             }
 			$this->pdoClass = $pdoClass;
         }
@@ -83,8 +112,57 @@ class DbConnection extends  BaseComponent{
         if ($this->charset !== null && in_array($this->getDriverName(), ['pgsql', 'mysql', 'mysqli', 'cubrid'])) {
             $this->pdo->exec('SET NAMES ' . $this->pdo->quote($this->charset));
         }
-        $this->trigger(self::EVENT_AFTER_OPEN);
-    }		
+        //$this->trigger(self::EVENT_AFTER_OPEN);
+    }   		
+	
+	/*
+	 * 执行SQL
+	 * 
+	 * */
+    public function createCommand($sql = null, $params = [])
+    {
+        $command = new DbCommand([
+            'db' => $this,
+            'sql' => $sql,
+        ]);
+
+        return $command->bindValues($params);
+    }
+	
+	//获得设备名称
+    public function getDriverName()
+    {
+        if ($this->_driverName === null) {
+            if (($pos = strpos($this->dsn, ':')) !== false) {
+                $this->_driverName = strtolower(substr($this->dsn, 0, $pos));
+            } else {
+                $this->_driverName = strtolower($this->getSlavePdo()->getAttribute(PDO::ATTR_DRIVER_NAME));
+            }
+        }
+        return $this->_driverName;
+    }
+	
+	/*
+	 * 
+	 * 
+	 * 
+	 * */
+    public function getSchema()
+    {
+        if ($this->_schema !== null) {
+            return $this->_schema;
+        } else {
+            $driver = $this->getDriverName();
+            if (isset($this->schemaMap[$driver])) {
+                $config = !is_array($this->schemaMap[$driver]) ? ['class' => $this->schemaMap[$driver]] : $this->schemaMap[$driver];
+                $config['db'] = $this;
+
+                return $this->_schema = Yii::createObject($config);
+            } else {
+                throw new NotSupportedException("Connection does not support reading schema information for '$driver' DBMS.");
+            }
+        }
+    }	
 	
 }
 
