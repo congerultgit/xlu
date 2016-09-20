@@ -17,6 +17,9 @@ class DbConnection extends  BaseComponent{
 
 	public $dsn = '';
 	
+	//
+	private $_driverName = null;
+	
 	public $username = '';
 	
 	public $password = '';
@@ -35,8 +38,11 @@ class DbConnection extends  BaseComponent{
 	//POD类名
 	public $pdoClass = null;
 	
-	//伪预处理 应该为false
-	public $emulatePrepare;
+
+	/*启用或禁用预处理语句的模拟。 有些驱动不支持或有限度地支持本地预处理。使用此设置强制PDO总是模拟预处理语句（如果为 TRUE  ），
+	或试着使用本地预处理语句（如果为 FALSE ）。如果驱动不能成功预处理当前查询，它将总是回到模拟预处理语句上。 需要 bool  类型。
+	*/
+	public $emulatePrepare = false;
 	
 	//
 	private $_schema = '';
@@ -78,8 +84,9 @@ class DbConnection extends  BaseComponent{
             throw new BaseErrorException('DB dsn is null.');
         }		
 		try{
+			//创建PDO对象
 			$this->pdo = $this->createPdoInstance();
-			//配置
+			//配置相关设置
 	        $this->initConnection();
 		}catch( BaseErrorException $e ){
 			echo $e->getMessage();
@@ -99,6 +106,10 @@ class DbConnection extends  BaseComponent{
         }
     }
 
+	/*
+	 * 在这里执行PDO的实例化
+	 * 
+	 * */
     public function getMasterPdo()
     {
         $this->open();
@@ -148,6 +159,18 @@ class DbConnection extends  BaseComponent{
 
         return $command->bindValues($params);
     }
+	
+	
+	/*
+	 * 不同过PDO直接执行SQL
+	 * 
+	 * */
+	public function execSql($sql){
+		
+		return $this->getMasterPdo()->query($sql);
+		
+		
+	}
 	
 	//获得设备名称
     public function getDriverName()

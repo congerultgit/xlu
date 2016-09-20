@@ -34,6 +34,11 @@ $db = xlu::object(array(
 	));
 $tmp = $db->createCommand('select * from edu_user limit 1');
 $data = $tmp->queryAll();
+
+$data = $db->execSql('select * from edu_user limit 4');
+foreach($data as $value){
+	var_dump($value);
+}
 var_dump($data);
 exit;
 
