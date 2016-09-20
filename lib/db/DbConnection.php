@@ -3,6 +3,7 @@ namespace xlu\lib\db;
 use xlu;
 use xlu\lib\base\BaseComponent;
 use xlu\lib\base\BaseErrorException;
+use PDO;
 /*
  * 
  * 处理DB的连接类
@@ -21,10 +22,10 @@ class DbConnection extends  BaseComponent{
 	public $password = '';
 	
 	//PDO配置信息
-	public $attributes = '';
+	public $attributes = array();
 	
 	//保存数据库连接实例
-	private $_pdo = null;
+	public $pdo = null;
 	
 	public $master = null;
 	
@@ -32,7 +33,7 @@ class DbConnection extends  BaseComponent{
 	public $charset = 'utf8';
 		
 	//POD类名
-	public $pdoClass = '';
+	public $pdoClass = null;
 	
 	//伪预处理 应该为false
 	public $emulatePrepare;
@@ -62,9 +63,9 @@ class DbConnection extends  BaseComponent{
 	//创建连接
 	private function open(){
 		
-		if($this->_pdo !== null){
+		if($this->pdo !== null){
 			
-			return $this->_pdo;
+			return $this->pdo;
 			
 		}
 		
@@ -77,7 +78,7 @@ class DbConnection extends  BaseComponent{
             throw new BaseErrorException('DB dsn is null.');
         }		
 		try{
-			$this->_pdo = $this->createPdoInstance();
+			$this->pdo = $this->createPdoInstance();
 			//配置
 	        $this->initConnection();
 		}catch( BaseErrorException $e ){
@@ -119,7 +120,6 @@ class DbConnection extends  BaseComponent{
             }
 			$this->pdoClass = $pdoClass;
         }
-
         return new $pdoClass($this->dsn, $this->username, $this->password, $this->attributes);
     }
 	

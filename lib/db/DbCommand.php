@@ -94,7 +94,11 @@ use xlu\lib\base\BaseComponent;
         }
 
         return $this;
-    }	
+    }
+	
+	public function getSql(){
+		return $this->_sql;
+	}	
 	
 	/*
 	 * 内部查询调用
@@ -140,16 +144,10 @@ use xlu\lib\base\BaseComponent;
 	        $this->pdoStatement->closeCursor();
 
 
-            Yii::endProfile($token, 'yii\db\Command::query');
         } catch (\Exception $e) {
-            Yii::endProfile($token, 'yii\db\Command::query');
-            throw $this->db->getSchema()->convertException($e, $rawSql);
+            throw new BaseErrorException(' sql:'.$rawSql.' exec error');
         }
 
-        if (isset($cache, $cacheKey, $info)) {
-            $cache->set($cacheKey, [$result], $info[1], $info[2]);
-            Yii::trace('Saved query result in cache', 'yii\db\Command::query');
-        }
 
         return $result;
     }	
@@ -175,14 +173,12 @@ use xlu\lib\base\BaseComponent;
 //      }
 		//实例化PDO对象
 		$pdo = $this->db->getMasterPdo();
-
         try {
             $this->pdoStatement = $pdo->prepare($sql);
             $this->bindPendingParams();
         } catch (\Exception $e) {
             $message = $e->getMessage() . "\nFailed to prepare SQL: $sql";
-            $errorInfo = $e instanceof \PDOException ? $e->errorInfo : null;
-            throw new Exception($message, $errorInfo, (int) $e->getCode(), $e);
+		    throw new BaseErrorException($message);
         }
     }
 	

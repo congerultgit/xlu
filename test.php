@@ -28,12 +28,13 @@ $obj_res = $res->getObject();
 $db = xlu::object(array(
 		'class'=>'xlu\lib\db\DbConnection',
 		'username' =>'root',
-		'password'  => '',
-		'dns'=>'mysql:host=192.168.3.110;dbname=edu_video',
+		'password'  => '123456',
+		'dsn'=>'mysql:host=192.168.3.110;dbname=edu_video',
 		'charset' =>'utf8'
 	));
-$tmp = $db->createCommand('select * from edu_user');
+$tmp = $db->createCommand('select * from edu_user limit 1');
 $data = $tmp->queryAll();
+var_dump($data);
 exit;
 
 //var_dump($a->test());
