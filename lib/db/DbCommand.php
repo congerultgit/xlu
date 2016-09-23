@@ -188,6 +188,29 @@ use xlu\lib\base\BaseComponent;
             $this->pdoStatement->bindValue($name, $value[0], $value[1]);
         }
         $this->_pendingParams = [];
+    }
+	
+    public function execute(){
+        $sql = $this->getSql();
+
+        $rawSql = $this->getRawSql();
+
+
+        if ($sql == '') {
+            return 0;
+        }
+
+        $this->prepare(false);
+
+        $token = $rawSql;
+        try {
+            $this->pdoStatement->execute();
+            $n = $this->pdoStatement->rowCount();
+            return $n;
+        } catch (\Exception $e) {
+            $message = $e->getMessage() . "\nFailed to exec SQL: $sql";
+		    throw new BaseErrorException($message);
+        }
     }	
 	
 	

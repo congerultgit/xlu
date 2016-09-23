@@ -28,18 +28,18 @@ $obj_res = $res->getObject();
 $db = xlu::object(array(
 		'class'=>'xlu\lib\db\DbConnection',
 		'username' =>'root',
-		'password'  => '123456',
-		'dsn'=>'mysql:host=192.168.3.110;dbname=edu_video',
+		'password'  => '',
+		'dsn'=>'mysql:host=127.0.0.1;dbname=test',
 		'charset' =>'utf8'
 	));
-$tmp = $db->createCommand('select * from edu_user limit 1');
-$data = $tmp->queryAll();
+//$tmp = $db->createCommand('select * from pxb_modules limit 1');
+//$data = $tmp->queryAll();
 
-$data = $db->execSql('select * from edu_user limit 4');
-foreach($data as $value){
-	var_dump($value);
-}
-var_dump($data);
+$insert = 'insert into fun_ssq(sys_number,red_1,red_2,red_3,red_4,red_5,red_6,blue_1,create_time) values("1",1,1,1,1,1,1,1,'.time().')';
+$tmp = $db->createCommand($insert);
+$num = $tmp->execute();
+
+var_dump($num);
 exit;
 
 //var_dump($a->test());
