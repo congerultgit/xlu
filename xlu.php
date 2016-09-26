@@ -1,4 +1,8 @@
 <?php
+/*
+ *不要做更多
+ * 
+ * */
 require(__DIR__ . '/base.php');
 class xlu extends xlu\base {
 	

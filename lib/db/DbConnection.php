@@ -69,10 +69,8 @@ class DbConnection extends  BaseComponent{
 	//创建连接
 	private function open(){
 		
-		if($this->pdo !== null){
-			
-			return $this->pdo;
-			
+		if($this->pdo !== null){			
+			return $this->pdo;			
 		}
 		
 		//主从
@@ -82,10 +80,11 @@ class DbConnection extends  BaseComponent{
 		
         if (empty($this->dsn)) {
             throw new BaseErrorException('DB dsn is null.');
-        }		
+        }
+        		
 		try{
 			//创建PDO对象
-			$this->pdo = $this->createPdoInstance();
+			$this->pdo = $this->createPdo();
 			//配置相关设置
 	        $this->initConnection();
 		}catch( BaseErrorException $e ){
@@ -117,17 +116,14 @@ class DbConnection extends  BaseComponent{
     }
 	
 	//真实创建连接,由不同的devices选用不同的PDO类
-    protected function createPdoInstance(){
+    protected function createPdo(){
         $pdoClass = $this->pdoClass;
-        if ($pdoClass === null) {
+        if ($pdoClass === null) {       	
             $pdoClass = 'PDO';
             if ($this->_driverName !== null) {
                 $driver = $this->_driverName;
             } elseif (($pos = strpos($this->dsn, ':')) !== false) {
                 $driver = strtolower(substr($this->dsn, 0, $pos));
-            }
-            if (isset($driver) && ($driver === 'mssql' || $driver === 'dblib' || $driver === 'sqlsrv')) {
-                $pdoClass = 'xlu\db\mssql\PDO';
             }
 			$this->pdoClass = $pdoClass;
         }
@@ -136,14 +132,17 @@ class DbConnection extends  BaseComponent{
 	
     protected function initConnection()
     {
+        //设置PDO异常模式
         $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        
+        //PDO模拟prepares
         if ($this->emulatePrepare !== null && constant('PDO::ATTR_EMULATE_PREPARES')) {
             $this->pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, $this->emulatePrepare);
         }
+        //mysql字符集处理
         if ($this->charset !== null && in_array($this->getDriverName(), ['pgsql', 'mysql', 'mysqli', 'cubrid'])) {
             $this->pdo->exec('SET NAMES ' . $this->pdo->quote($this->charset));
         }
-        //$this->trigger(self::EVENT_AFTER_OPEN);
     }   		
 	
 	/*
@@ -188,7 +187,7 @@ class DbConnection extends  BaseComponent{
 	/*
 	 * 
 	 * 
-	 * 
+	 * 获得数据库名称
 	 * */
     public function getSchema()
     {

@@ -107,27 +107,6 @@ use xlu\lib\base\BaseComponent;
     protected function queryInternal($method, $fetchMode = null){
         $rawSql = $this->getRawSql();
 
-//      if ($method !== '') {
-//          $info = $this->db->getQueryCacheInfo($this->queryCacheDuration, $this->queryCacheDependency);
-//          if (is_array($info)) {
-//              /* @var $cache \yii\caching\Cache */
-//              $cache = $info[0];
-//              $cacheKey = [
-//                  __CLASS__,
-//                  $method,
-//                  $fetchMode,
-//                  $this->db->dsn,
-//                  $this->db->username,
-//                  $rawSql,
-//              ];
-//              $result = $cache->get($cacheKey);
-//              if (is_array($result) && isset($result[0])) {
-//                  Yii::trace('Query result served from cache', 'yii\db\Command::query');
-//                  return $result[0];
-//              }
-//          }
-//      }
-
         $this->prepare(true);
 
         $token = $rawSql;

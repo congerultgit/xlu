@@ -8,7 +8,6 @@ class BaseComponent extends  Baseobject{
 	public function __set($name, $value){
         $setter = 'set' . $name;
         if (method_exists($this, $setter)) {
-            // set property
             $this->$setter($value);
 		}
 	}
@@ -16,7 +15,6 @@ class BaseComponent extends  Baseobject{
 	public function __get($name){
         $getter = 'get' . $name;
         if (method_exists($this, $getter)) {
-            // read property, e.g. getName()
             return $this->$getter();
 		}
 	}
