@@ -13,8 +13,10 @@ class DiContainer extends  BaseComponent{
 	public function get($type,$param=array(),$array=array()){
 		
 		//生成唯一的key
-		$key = $type.base64_encode(json_encode($param)).base64_encode(json_encode($array));
-
+		//$key = $type.base64_encode(json_encode($param)).base64_encode(json_encode($array));
+		$key = $type;
+		
+		
 		if(isset($this->singletons[$key])){
 			return $this->singletons;
 		}
@@ -44,8 +46,8 @@ class DiContainer extends  BaseComponent{
 	
 	public function set($type,$param=array(),$array=array()){
 
-		$key = $type.base64_encode(json_encode($param)).base64_encode(json_encode($array));
-	
+		//$key = $type.base64_encode(json_encode($param)).base64_encode(json_encode($array));
+		$key = $type;
 		if(class_exists($type) == FALSE){
 			$this->singletons[$key] = $param;
 			return $param;
