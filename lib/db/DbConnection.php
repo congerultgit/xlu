@@ -14,44 +14,87 @@ use PDO;
  */
 class DbConnection extends  BaseComponent{
 	
-
+   /**
+	* 数据库连接类型
+	*@var string   mysql:host=127.0.0.1;dbname=test 
+	* 
+	*/
 	public $dsn = '';
-	
-	//
+
+   /**
+	*设备名称   目录区分，不同类型特殊对待
+	*@var string mysql
+	*/
+		
 	private $_driverName = null;
-	
+
+   /**
+	*用户名 
+	* @var string
+	*/
 	public $username = '';
-	
+
+   /**
+	*密码
+	*@var string 
+	*/	
 	public $password = '';
+
+
 	
-	//PDO配置信息
+	/**
+	 *pdo链接时的配置信息
+	 *@var string
+	 */	
 	public $attributes = array();
+
 	
-	//保存数据库连接实例
+	/**
+	 * pdo()函数创建的实例
+	 * @var object 
+	 */
 	public $pdo = null;
-	
+
+	/**
+	 *主库
+	 * @var array 
+	 */	
 	public $master = null;
+
 	
-	//默认字符集
+	/**
+	 *默认字符集 
+	 * @var string
+	 */
 	public $charset = 'utf8';
 		
-	//POD类名
+	/**
+	 *初始化的类名 
+	 * @var string
+	 * 
+	 */
 	public $pdoClass = null;
 	
 
-	/*启用或禁用预处理语句的模拟。 有些驱动不支持或有限度地支持本地预处理。使用此设置强制PDO总是模拟预处理语句（如果为 TRUE  ），
-	或试着使用本地预处理语句（如果为 FALSE ）。如果驱动不能成功预处理当前查询，它将总是回到模拟预处理语句上。 需要 bool  类型。
-	*/
+	/**
+	 * 启用或禁用预处理语句的模拟。 有些驱动不支持或有限度地支持本地预处理。使用此设置强制PDO总是模拟预处理语句（如果为 TRUE  ），
+	 * 或试着使用本地预处理语句（如果为 FALSE ）。如果驱动不能成功预处理当前查询，它将总是回到模拟预处理语句上。 需要 bool  类型。
+	 * @var bool
+	 */
 	public $emulatePrepare = false;
 	
 	//
 	private $_schema = '';
 	
-	//?
+	//
 	public $_transaction;
 
 	
-	//
+	/**
+	 * 
+	 * 
+	 * 
+	 */
     public $schemaMap = [
         'pgsql' => 'xlu\lib\db\pgsql\Schema', // PostgreSQL
         'mysqli' => 'xlu\lib\db\mysql\MysqlSchema', // MySQL
@@ -66,7 +109,11 @@ class DbConnection extends  BaseComponent{
     ];	
 
 	
-	//创建连接
+	/**
+	 * 调用此函数创建链接
+	 * 
+	 * 
+	 */
 	private function open(){
 		
 		if($this->pdo !== null){			
@@ -95,6 +142,12 @@ class DbConnection extends  BaseComponent{
 		
 	}
 	
+	
+	/**
+	 * 
+	 * 
+	 * 
+	 */
     public function getSlavePdo($fallbackToMaster = true)
     {
         $db = $this->getSlave(false);
@@ -105,8 +158,8 @@ class DbConnection extends  BaseComponent{
         }
     }
 
-	/*
-	 * 在这里执行PDO的实例化
+	/**
+	 * 对外使用,封装后的open函数
 	 * 
 	 * */
     public function getMasterPdo()
@@ -115,7 +168,10 @@ class DbConnection extends  BaseComponent{
         return $this->pdo;
     }
 	
-	//真实创建连接,由不同的devices选用不同的PDO类
+	/**
+	 * 创建pdo对象 
+	 * 
+	 */
     protected function createPdo(){
         $pdoClass = $this->pdoClass;
         if ($pdoClass === null) {       	
@@ -129,7 +185,10 @@ class DbConnection extends  BaseComponent{
         }
         return new $pdoClass($this->dsn, $this->username, $this->password, $this->attributes);
     }
-	
+
+	/**
+	 *初始化配置信息  
+	 */	
     protected function initConnection()
     {
         //设置PDO异常模式
@@ -145,10 +204,11 @@ class DbConnection extends  BaseComponent{
         }
     }   		
 	
-	/*
-	 * 执行SQL
+	/**
+	 *创建命令对象 
 	 * 
-	 * */
+	 * 
+	 */
     public function createCommand($sql = null, $params = [])
     {
         $command = new DbCommand([
@@ -160,18 +220,19 @@ class DbConnection extends  BaseComponent{
     }
 	
 	
-	/*
+	/**
 	 * 不同过PDO直接执行SQL
 	 * 
-	 * */
+	 */
 	public function execSql($sql){
 		
 		return $this->getMasterPdo()->query($sql);
-		
-		
+			
 	}
 	
-	//获得设备名称
+	/**
+	 *根据dsn名称获取数据库类型 如mysql，orale
+	 */
     public function getDriverName()
     {
         if ($this->_driverName === null) {
@@ -184,11 +245,9 @@ class DbConnection extends  BaseComponent{
         return $this->_driverName;
     }
 	
-	/*
-	 * 
-	 * 
-	 * 获得数据库名称
-	 * */
+	/**
+	 *根据数据库类型取得数据库概要 
+	 */
     public function getSchema()
     {
         if ($this->_schema !== null) {
@@ -206,6 +265,11 @@ class DbConnection extends  BaseComponent{
         }
     }
 	
+	/**
+	 *处理SQL 
+	 * 
+	 * 
+	 */
     public function quoteSql($sql)
     {
         return preg_replace_callback(
@@ -221,11 +285,19 @@ class DbConnection extends  BaseComponent{
         );
     }
 
+	/**
+	 * 
+	 */
     public function quoteColumnName($name)
     {
         return $this->getSchema()->quoteColumnName($name);
     }
 	
+	/**
+	 * 
+	 * 
+	 * 
+	 */
     public function getTransaction()
     {
         return $this->_transaction && $this->_transaction->getIsActive() ? $this->_transaction : null;

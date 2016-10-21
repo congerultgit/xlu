@@ -13,8 +13,17 @@ use xlu\lib\base\BaseComponent;
  
  class DbCommand extends  BaseComponent{
  	
+ 	
+ 	/**
+ 	 *db存储dbconnection对象 
+ 	 *@var object 
+ 	 */
 	public $db = '';
 	
+	/**
+	 *执行的SQL
+	 * @var string 
+	 */
 	private $_sql = '';
 	
 	//
@@ -23,13 +32,17 @@ use xlu\lib\base\BaseComponent;
 	//
 	private $_pendingParams = array();
 	
-	//预处理对象
+	/**
+	 *pdo产生的预处理对象 
+	 * @var object
+	 */
 	public $pdoStatement;
-	/*
+
+
+	/**
+	 *绑定变量 
 	 * 
-	 * 
-	 * 
-	 * */
+	 */
     public function bindValues($values)
     {
         if (empty($values)) {
@@ -51,12 +64,19 @@ use xlu\lib\base\BaseComponent;
         return $this;
     }
 	
+	/**
+	 *查询 
+	 * 
+	 * 
+	 */
     public function queryAll($fetchMode = null)
     {
         return $this->queryInternal('fetchAll', $fetchMode);
     }
 	
-	
+	/**
+	 * 获得SQL
+	 */
     public function getRawSql()
     {
         if (empty($this->params)) {
@@ -83,7 +103,10 @@ use xlu\lib\base\BaseComponent;
         return $sql;
     }
 	
-	//component 魔术方法调用
+    /**
+     * 
+     * component 魔术方法调用
+     */
     public function setSql($sql)
     {
         if ($sql !== $this->_sql) {
@@ -96,12 +119,15 @@ use xlu\lib\base\BaseComponent;
         return $this;
     }
 	
+	/**
+	 *设置SQL 
+	 */
 	public function getSql(){
 		return $this->_sql;
 	}	
 	
-	/*
-	 * 内部查询调用
+	/**
+	 *核心查询函数
 	 * 
 	 * */
     protected function queryInternal($method, $fetchMode = null){
@@ -131,7 +157,11 @@ use xlu\lib\base\BaseComponent;
         return $result;
     }	
 	
-	
+	/**
+	 * 这里才会调用dbconnection的方法创建pdo对象
+	 * 
+	 * 
+	 */
     public function prepare($forRead = null){
         if ($this->pdoStatement) {
             $this->bindPendingParams();
@@ -161,7 +191,7 @@ use xlu\lib\base\BaseComponent;
         }
     }
 	
-
+	
     protected function bindPendingParams(){
         foreach ($this->_pendingParams as $name => $value) {
             $this->pdoStatement->bindValue($name, $value[0], $value[1]);
