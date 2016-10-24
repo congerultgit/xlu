@@ -65,14 +65,21 @@ use xlu\lib\base\BaseComponent;
     }
 	
 	/**
-	 *查询 
-	 * 
-	 * 
+	 *查询获取所有数据 
 	 */
     public function queryAll($fetchMode = null)
     {
         return $this->queryInternal('fetchAll', $fetchMode);
     }
+    
+    
+    /**
+     * 获取一条数据
+     * */
+     public function queryOne($fetchMode = null)
+    {
+        return $this->queryInternal('fetch', $fetchMode);
+    }   
 	
 	/**
 	 * 获得SQL
