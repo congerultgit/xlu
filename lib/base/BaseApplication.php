@@ -1,15 +1,15 @@
 <?php
 namespace xlu\lib\base;
 /*
- * 应用开始 程序
+ * app base info
  * 
  * 
  * 
  * 
  */
-
-
 class BaseApplication extends BaseComponent {
+
+	
 	
 	
 	
