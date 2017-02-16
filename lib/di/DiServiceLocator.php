@@ -47,8 +47,11 @@ class DiServiceLocator extends  BaseComponent{
 		}		
 		if(isset($this->_components[$id]) == false)throw new BaseErrorException("component:".$id." not defined");	
 		
-		$this->_components[$id] = xlu::object($this->_define[$id]);
-		
+		if(isset($this->_define[$id]['class'])){
+			$this->_components[$id] = xlu::object($this->_define[$id]);
+		}else{
+			$this->_components[$id] = $this->_define[$id];
+		}
 		return $this->_components[$id];
 			
 	} 
