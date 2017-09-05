@@ -22,6 +22,12 @@ class test {
 	
 	
 }
+
+function showArray($param){
+	echo '<pre>';
+	var_dump($param);
+	echo '</pre>';
+}
 spl_autoload_register(['inc', 'load'], true, true);
 
 
